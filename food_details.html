@@ -1,117 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Food Details</title>
-    <link rel="stylesheet" type="text/css" href="fstyles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Food Details</title>
+  <link rel="stylesheet" type="text/css" href="fstyles.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.18.0/dist/umd/supabase.js"></script>
 </head>
 <body>
-    
-    <nav>
-        <ul>
-            <li><a href="home.html">Home</a></li>
-            <li><a href="foodstocks.html">Food Items</a></li>
-            <li><a href="donatefood.html">Donate Food</a></li>
-            <li><a href="contactus.html">Contact Us</a></li>
-            <li><a href="checkout.html">Checkout (<span id="cart-count">0</span>)</a></li>
-            <li id="auth-link"><a href="login.html">Login</a></li>
-        </ul>
-    </nav>
-    <script src="auth.js"></script> <!-- Include this in every page -->
-    <div class="header">
-        <span class="header-text">Food Details</span>
-    </div>
 
-    <div class="food-details-container">
-        <h2 id="foodName">Loading...</h2>
-        <p><strong>Food ID:</strong> <span id="foodId">Loading...</span></p>
-        <p><strong>Quantity:</strong> <span id="foodQuantity">Loading...</span> plates</p>
-        <p><strong>Shelf Life:</strong> <span id="foodShelfLife">Loading...</span> days</p>
-        <p><strong>Distributor Name:</strong> <span id="distributorName">Loading...</span></p>
-        <p><strong>Distributor Address:</strong> <span id="distributorAddress">Loading...</span></p>
+  <nav>
+    <ul>
+      <li><a href="home.html">Home</a></li>
+      <li><a href="foodstocks.html">Food Items</a></li>
+      <li><a href="donatefood.html">Donate Food</a></li>
+      <li><a href="contactus.html">Contact Us</a></li>
+      <li><a href="checkout.html">Checkout (<span id="cart-count">0</span>)</a></li>
+    </ul>
+  </nav>
 
-        <p id="message-box" class="hidden"></p>
+  <div class="header">
+    <span class="header-text">Food Details</span>
+  </div>
 
-        <button onclick="goBack()">Back</button>
-        <button class="request-btn" onclick="addToCart()">Add to Cart</button>
-    </div>
+  <div class="food-details-container">
+    <h2 id="foodName">Loading...</h2>
+    <p><strong>Order ID:</strong> <span id="orderId">Loading...</span></p>
+    <p><strong>Quantity:</strong> <span id="foodQuantity">Loading...</span> packs</p>
+    <p><strong>Shelf Life:</strong> <span id="foodShelfLife">Loading...</span></p>
+    <p><strong>Distributor Name:</strong> <span id="distributorName">Loading...</span></p>
+    <p><strong>Distributor Address:</strong> <span id="distributorAddress">Loading...</span></p>
 
-    <script>
-        function updateCartCount() {
-            const cart = JSON.parse(localStorage.getItem("cart")) || [];
-            document.getElementById("cart-count").innerText = cart.length;
-        }
-    
-        function showMessage(message, success = true) {
-            const messageBox = document.getElementById("message-box");
-            messageBox.innerText = message;
-            messageBox.className = success ? "success-message" : "error-message";
-            messageBox.classList.remove("hidden");
-    
-            if (!success) {
-                document.querySelector(".request-btn").disabled = true;
-            }
-        }
-    
-        async function fetchFoodDetails() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const foodName = urlParams.get("name");
+    <p id="message-box" class="hidden"></p>
 
-    if (!foodName) {
+    <button onclick="goBack()">Back</button>
+    <button class="request-btn" onclick="addToCart()">Add to Cart</button>
+  </div>
+
+  <script>
+    const supabaseUrl = "https://fvwigvpgfzvbbbfvizbr.supabase.co";
+    const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ2d2lndnBnZnp2YmJiZnZpemJyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ0NTQ3NTIsImV4cCI6MjA2MDAzMDc1Mn0.TVJLaniIzP8JECFg6yXqFKEcra69jKzBsxOyASUl3q4";
+    const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+    let currentOrderId = null; // Store the fetched order id
+
+    function updateCartCount() {
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      document.getElementById("cart-count").innerText = cart.length;
+    }
+
+    function showMessage(message, success = true) {
+      const messageBox = document.getElementById("message-box");
+      messageBox.innerText = message;
+      messageBox.className = success ? "success-message" : "error-message";
+      messageBox.classList.remove("hidden");
+    }
+
+    async function fetchFoodDetails() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const foodName = urlParams.get("name");
+
+      if (!foodName) {
         showMessage("Food not found!", false);
         return;
-    }
+      }
 
-    document.getElementById("foodName").innerText = foodName; // Display food name
+      document.getElementById("foodName").innerText = foodName;
 
-    try {
-        const response = await fetch(`http://localhost:5000/api/food?name=${encodeURIComponent(foodName)}`);
-        const data = await response.json();
-        console.log("API Response:", data);  // ✅ Debugging Step
+      try {
+        const { data, error } = await supabase
+          .from("food_donations")
+          .select("id, food_item, quantity, shelf_life, ngo_name, address")
+          .eq("food_item", foodName)
+          .limit(1)
+          .single();
 
-        if (response.ok && data.quantity !== undefined) {
-            document.getElementById("foodId").innerText = data.id; // Display food ID
-            document.getElementById("foodQuantity").innerText = data.quantity;
-            document.getElementById("foodShelfLife").innerText = data.shelf_life;
-            document.getElementById("distributorName").innerText = data.ngo_name; 
-            document.getElementById("distributorAddress").innerText = data.address; 
-
-            if (data.quantity === 0) {
-                showMessage("This item is out of stock!", false);
-                document.querySelector(".request-btn").disabled = true;
-            }
-        } else {
-            showMessage("Food details not found!", false);
+        if (error || !data) {
+          showMessage("Food details not found!", false);
+          return;
         }
-    } catch (error) {
+
+        currentOrderId = data.id; // Store order ID
+
+        document.getElementById("orderId").innerText = data.id;
+        document.getElementById("foodQuantity").innerText = data.quantity;
+        document.getElementById("foodShelfLife").innerText = data.shelf_life;
+        document.getElementById("distributorName").innerText = data.ngo_name;
+        document.getElementById("distributorAddress").innerText = data.address;
+
+      } catch (error) {
         console.error("Error fetching food details:", error);
         showMessage("Error loading food details.", false);
+      }
     }
+
+    function goBack() {
+      window.history.back();
+    }
+
+    function addToCart() {
+    const orderId = document.getElementById("orderId").innerText;
+    const foodName = document.getElementById("foodName").innerText;
+    const foodQuantity = document.getElementById("foodQuantity").innerText;
+    const foodShelfLife = document.getElementById("foodShelfLife").innerText;
+    const distributorName = document.getElementById("distributorName").innerText;
+    const distributorAddress = document.getElementById("distributorAddress").innerText;
+
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    cart.push({ orderId, foodName, foodQuantity, foodShelfLife, distributorName, distributorAddress });
+    localStorage.setItem("cart", JSON.stringify(cart));
+
+    showMessage(`${foodName} added to cart!`);
+    updateCartCount();
 }
-function goBack() {
-            window.history.back();
-        }
 
-        function addToCart() {
-            const foodName = document.getElementById("foodName").innerText;
-            const foodId=document.getElementById("foodId").innerText;
-            const foodQuantity = document.getElementById("foodQuantity").innerText;
-            const foodShelfLife = document.getElementById("foodShelfLife").innerText;
-            const distributorName = document.getElementById("distributorName").innerText;
-            const distributorAddress = document.getElementById("distributorAddress").innerText;
 
-            const cart = JSON.parse(localStorage.getItem("cart")) || [];
-            cart.push({ foodName, foodId, foodQuantity, foodShelfLife, distributorName, distributorAddress });
-            localStorage.setItem("cart", JSON.stringify(cart));
+    fetchFoodDetails();
+    updateCartCount();
+  </script>
 
-            showMessage(`${foodName} added to cart!`);
-            updateCartCount();
-        }
-
-    
-        fetchFoodDetails();
-        updateCartCount();
-    </script>
 </body>
 </html>
