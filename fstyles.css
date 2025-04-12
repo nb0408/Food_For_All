@@ -552,16 +552,29 @@ footer {
 }
 
 /* Mission Statement */
-.mission {
-  background-color: #f8f9fa;
-  padding: 60px 20px;
+.impact-section {
   text-align: center;
+  padding: 60px 20px;
+  background-color: #ffffff;
 }
 
-.mission h2 {
-  font-size: 2rem;
+.impact-section h2 {
+  font-size: 2.8em;
+  color: #f2542d;
+  font-weight: 800;
+  letter-spacing: 1px;
   margin-bottom: 20px;
 }
+
+.impact-section p {
+  font-size: 1.1em;
+  color: #000000;
+  font-weight: 600;
+  max-width: 800px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
 
 /* Core Focus Areas */
 .focus-areas {
