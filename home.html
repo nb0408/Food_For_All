@@ -1,63 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FoodForAll</title>
-    <link rel="stylesheet" href="fstyles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FoodForAll</title>
+  <link rel="stylesheet" href="fstyles.css" />
 </head>
 <body>
-    
-    <nav>
-        <ul>
-           
-            <li><a href="#">Home1234</a></li>
-            <li><a href="foodstocks.html">Food Items</a></li>
-            <li><a href="donatefood.html">Donate</a></li>
-            <li><a href="contactus.html">Contact Us</a></li>
-            <li><a href="checkout.html">Checkout</a></li>
-            <li id="auth-link"><a href="login.html">Login</a></li>
-        </ul>
-    </nav>
-    <script src="auth.js"></script> <!-- Include this in every page -->
-    <header class="main">
-        <div class="main-content">
-            <h1>FoodForAll</h1>
-            <p>Connecting Surplus Food to the Needy</p>
-            <a href="donatefood.html" class="btn primary-btn">Donate Now</a>
-            <a href="foodstocks.html" class="btn secondary-btn">Request Food</a>
-        </div>
-    </header>
-    
-    <section class="stats">
-        <div class="stat">
-            <h2>10,000+</h2>
-            <p>Meals Distributed</p>
-        </div>
-        <div class="stat">
-            <h2>500+</h2>
-            <p>Volunteers</p>
-        </div>
-        <div class="stat">
-            <h2>100+</h2>
-            <p>Communities Helped</p>
-        </div>
-    </section>
 
-    <header class="bottom">
-        <div class="bottom-content">
-            <h1>OUR MISSION </h1>
-            <p>TO BRING HOPE TO MANY LIVES<br>
-                AS WE SERVE DIFFERENT COMMUNITIES<br>
-                THROUGH VARIOUS PROJECTS<br>
-                IN CHENNAI AND BEYOND
-            </p>
-        </div>
-    </header>
+  <!-- Navigation Bar (unchanged) -->
+  <nav>
+    <ul>
+      <li><a href="#">Home</a></li>
+      <li><a href="foodstocks.html">Food Items</a></li>
+      <li><a href="donatefood.html">Donate</a></li>
+      <li><a href="contactus.html">Contact Us</a></li>
+      <li><a href="checkout.html">Checkout</a></li>
+      <li id="auth-link"><a href="login.html">Login</a></li>
+    </ul>
+  </nav>
 
-    <footer>
-        <p>&copy; 2025 FoodForAll | Made with ❤</p>
-    </footer>
+  <!-- Hero Section -->
+  <header class="main">
+    <div class="overlay">
+      <div class="main-content">
+        <h1>FoodForAll</h1>
+        <p>Connecting Surplus Food to the Needy<br><small>Together, we serve communities across Chennai and beyond</small></p>
+        <a href="donatefood.html" class="btn primary-btn">Donate Now</a>
+        <a href="foodstocks.html" class="btn secondary-btn">Request Food</a>
+      </div>
+    </div>
+  </header>
 
+  <!-- Impact Statistics Section -->
+  <section class="stats">
+    <div class="stat">
+      <h2>10,000+</h2>
+      <p>Meals Distributed</p>
+    </div>
+    <div class="stat">
+      <h2>500+</h2>
+      <p>Volunteers</p>
+    </div>
+    <div class="stat">
+      <h2>100+</h2>
+      <p>Communities Helped</p>
+    </div>
+  </section>
+
+  <!-- Mission Section -->
+  <section class="bottom">
+    <div class="bottom-content">
+      <h1>Our Mission</h1>
+      <p>
+        To minimize food waste and hunger by connecting restaurants<br>
+        with surplus food to NGOs serving vulnerable communities.<br>
+        Every donation supports a sustainable future and uplifts lives.
+      </p>
+    </div>
+  </section>
+
+  <!-- SDG Focus Section -->
+  <section class="sdgs">
+    <h2>Our Work Supports the Sustainable Development Goals</h2>
+    <div class="sdg-grid">
+      <div class="sdg-card">
+        <img src="pictures/sdg2.png" alt="SDG 2: Zero Hunger">
+        <p>SDG 2: Zero Hunger</p>
+      </div>
+      <div class="sdg-card">
+        <img src="pictures/sdg12.png" alt="SDG 12: Responsible Consumption">
+        <p>SDG 12: Responsible Consumption</p>
+      </div>
+      <div class="sdg-card">
+        <img src="pictures/sdg13.png" alt="SDG 13: Climate Action">
+        <p>SDG 13: Climate Action</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 FoodForAll | Made with ❤ for sustainability</p>
+  </footer>
+
+  <script src="auth.js"></script>
 </body>
 </html>
