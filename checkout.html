@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Checkout</title>
     <link rel="stylesheet" type="text/css" href="fstyles.css">
+    <!-- Include Supabase JS client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
@@ -15,13 +17,9 @@
             <li><a href="donatefood.html">Donate Food</a></li>
             <li><a href="contactus.html">Contact Us</a></li>
             <li><a href="checkout.html">Checkout (<span id="cart-count">0</span>)</a></li>
-            <li id="auth-link"><a href="login.html">Login</a></li>
         </ul>
     </nav>
-    <div class="header2">
-        <span class="header-text">Checkout cart</span>
-    </div>
-    <script src="auth.js"></script> <!-- Include this in every page -->
+
     <section class="checkout-container">
         <h2>Cart Items</h2>
         <p id="message-box" class="hidden"></p>
@@ -31,8 +29,8 @@
                 <tr>
                     <th>Order ID</th>
                     <th>Food Name</th>
-                    <th>Quantity (In Plates)</th>
-                    <th>Shelf Life (In Days)</th>
+                    <th>Quantity</th>
+                    <th>Shelf Life</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -46,6 +44,11 @@
     </section>
 
     <script>
+        // Initialize Supabase client with your project URL and anon key
+        const supabaseClient = supabase.createClient(
+            'https://fvwigvpgfzvbbbfvizbr.supabase.co',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ2d2lndnBnZnp2YmJiZnZpemJyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ0NTQ3NTIsImV4cCI6MjA2MDAzMDc1Mn0.TVJLaniIzP8JECFg6yXqFKEcra69jKzBsxOyASUl3q4'
+        );
 
         function updateCartCount() {
             const cart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -53,33 +56,31 @@
         }
 
         function showMessage(message, success = true) {
-    const messageBox = document.getElementById("message-box");
-    messageBox.innerText = message;
-    messageBox.className = success ? "success-message" : "error-message";
-    messageBox.classList.remove("hidden");
-}
-
+            const messageBox = document.getElementById("message-box");
+            messageBox.innerText = message;
+            messageBox.className = success ? "success-message" : "error-message";
+            messageBox.classList.remove("hidden");
+        }
 
         function loadCart() {
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
-    const cartTable = document.getElementById("cart-items");
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            const cartTable = document.getElementById("cart-items");
 
-    if (cart.length === 0) {
-        cartTable.innerHTML = '<tr><td colspan="5">No items in cart.</td></tr>';
-        return;
-    }
+            if (cart.length === 0) {
+                cartTable.innerHTML = '<tr><td colspan="5">No items in cart.</td></tr>';
+                return;
+            }
 
-    cartTable.innerHTML = cart.map((item, index) => `
-        <tr>
-            <td>${item.foodId}</td> <!-- Order ID from DB -->
-            <td>${item.foodName}</td>
-            <td>${item.foodQuantity}</td>
-            <td>${item.foodShelfLife}</td>
-            <td><button class="remove-btn" onclick="removeFromCart(${index})">Remove</button></td>
-        </tr>
-    `).join("");
-}
-
+            cartTable.innerHTML = cart.map((item, index) => `
+                <tr>
+                    <td>${item.orderId}</td>
+                    <td>${item.foodName}</td>
+                    <td>${item.foodQuantity}</td>
+                    <td>${item.foodShelfLife}</td>
+                    <td><button class="remove-btn" onclick="removeFromCart(${index})">Remove</button></td>
+                </tr>
+            `).join("");
+        }
 
         function removeFromCart(index) {
             let cart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -91,33 +92,35 @@
         }
 
         async function placeOrder() {
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
-    if (cart.length === 0) {
-        showMessage("Cart is empty!", false);
-        return;
-    }
+            const cart = JSON.parse(localStorage.getItem("cart")) || [];
+            if (cart.length === 0) {
+                showMessage("No items in the cart to place an order.", false);
+                return;
+            }
 
-    let response = await fetch("http://localhost:5000/confirm-order", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ cart })
-    });
+            try {
+                console.log("Placing Order, cart items:", cart);
 
-    let result = await response.json();
-    console.log("Server Response:", result); // Debugging Line
+                const { data, error } = await supabaseClient
+                    .from('food_donations')
+                    .delete()
+                    .in('id', cart.map(item => item.orderId));
 
-    if (response.ok && result.success) {
-        localStorage.removeItem("cart");
-        loadCart();
-        updateCartCount();
-        showMessage(result.message, true); // Show success message in green
-    } else {
-        showMessage("Error: " + result.message, false); // Show error message in red
-    }
-}
+                console.log("Supabase response:", data, error);
 
+                if (error) {
+                    throw error;
+                }
 
-
+                showMessage("✅ Order Placed Successfully!");
+                localStorage.removeItem("cart");
+                loadCart();
+                updateCartCount();
+            } catch (error) {
+                console.error("Error placing order:", error);
+                showMessage("Error placing the order.", false);
+            }
+        }
 
         function clearCart() {
             localStorage.removeItem("cart");
@@ -126,6 +129,7 @@
             showMessage("Cart cleared!");
         }
 
+        // Initialize the page
         loadCart();
         updateCartCount();
     </script>
