@@ -1,0 +1,20 @@
+{
+  "name": "web_project",
+  "version": "1.0.0",
+  "main": "auth.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nb0408/Food_For_All.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nb0408/Food_For_All/issues"
+  },
+  "homepage": "https://github.com/nb0408/Food_For_All#readme",
+  "description": ""
+}
