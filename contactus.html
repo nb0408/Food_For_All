@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,16 +11,14 @@
     <!-- Navigation Bar -->
     <nav>
         <ul>
-            
             <li><a href="home.html">Home</a></li>
             <li><a href="foodstocks.html">Food Items</a></li>
             <li><a href="donatefood.html">Donate</a></li>
             <li><a href="#">Contact Us</a></li>
             <li><a href="checkout.html">Checkout</a></li>
-            <li id="auth-link"><a href="login.html">Login</a></li>
         </ul>
     </nav>
-    <script src="auth.js"></script> <!-- Include this in every page -->
+
     <!-- Page Header -->
     <div class="header2">
         <span class="header-text">Contact Us</span>
@@ -43,17 +40,26 @@
             <table cellspacing="10px">
                 <tr>
                     <td align="right"><label for="name">Name:</label></td>
-                    <td><input type="text" id="name" name="name" required></td>
+                    <td>
+                        <input type="text" id="name" name="name" required>
+                        <div id="nameError" class="error-message"></div>
+                    </td>
                 </tr>
 
                 <tr>
                     <td align="right"><label for="email">Email:</label></td>
-                    <td><input type="email" id="email" name="email" required></td>
+                    <td>
+                        <input type="email" id="email" name="email" required>
+                        <div id="emailError" class="error-message"></div>
+                    </td>
                 </tr>
 
                 <tr>
                     <td align="right"><label for="message">Message:</label></td>
-                    <td><textarea id="message" name="message" rows="4" required></textarea></td>
+                    <td>
+                        <textarea id="message" name="message" rows="4" required></textarea>
+                        <div id="messageError" class="error-message"></div>
+                    </td>
                 </tr>
 
                 <tr>
@@ -74,29 +80,76 @@
         <p>&copy; 2025 FoodForAll | Made with ❤</p>
     </footer>
 
-    <!-- JavaScript to Handle Form Submission -->
+    <!-- JavaScript to Handle Form Submission and Validation -->
     <script>
+        const SUPABASE_URL = "https://fvwigvpgfzvbbbfvizbr.supabase.co";
+        const SUPABASE_API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ2d2lndnBnZnp2YmJiZnZpemJyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ0NTQ3NTIsImV4cCI6MjA2MDAzMDc1Mn0.TVJLaniIzP8JECFg6yXqFKEcra69jKzBsxOyASUl3q4";
+        
+        function validateForm() {
+            let isValid = true;
+
+            // Clear previous error messages
+            document.getElementById("nameError").textContent = "";
+            document.getElementById("emailError").textContent = "";
+            document.getElementById("messageError").textContent = "";
+
+            // Name validation
+            const name = document.getElementById("name").value;
+            if (name.trim() === "") {
+                document.getElementById("nameError").textContent = "Name is required.";
+                isValid = false;
+            }
+
+            // Email validation
+            const email = document.getElementById("email").value;
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(email)) {
+                document.getElementById("emailError").textContent = "Please enter a valid email.";
+                isValid = false;
+            }
+
+            // Message validation
+            const message = document.getElementById("message").value;
+            if (message.trim() === "") {
+                document.getElementById("messageError").textContent = "Message cannot be empty.";
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
         async function submitContactForm() {
+            if (!validateForm()) {
+                return; // Prevent form submission if validation fails
+            }
+
             const name = document.getElementById("name").value;
             const email = document.getElementById("email").value;
             const message = document.getElementById("message").value;
             const responseMessage = document.getElementById("responseMessage");
 
             try {
-                const response = await fetch("http://localhost:5000/contact", {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/contacts`, {
                     method: "POST",
-                    headers: { "Content-Type": "application/json" },
+                    headers: {
+                        "Content-Type": "application/json",
+                        "apikey": SUPABASE_API_KEY,
+                        "Authorization": `Bearer ${SUPABASE_API_KEY}`,
+                        "Prefer": "return=representation"
+                    },
                     body: JSON.stringify({ name, email, message })
                 });
 
                 const result = await response.json();
+
                 if (response.ok) {
                     responseMessage.style.color = "green";
-                    responseMessage.innerText = result.message;
+                    responseMessage.innerText = "Thank you for contacting us!";
                     document.getElementById("contactForm").reset();
                 } else {
                     responseMessage.style.color = "red";
-                    responseMessage.innerText = result.error || "Failed to send message.";
+                    responseMessage.innerText = result.message || "Failed to submit.";
+                    console.error(result);
                 }
             } catch (error) {
                 responseMessage.style.color = "red";
@@ -105,6 +158,5 @@
             }
         }
     </script>
-
 </body>
 </html>
