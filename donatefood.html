@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Request Foods</title>
+    <title>Donate Food</title>
     <link rel="stylesheet" type="text/css" href="fstyles.css">
     <style>
         .error { color: red; font-size: 14px; }
         .success { color: green; font-size: 16px; font-weight: bold; text-align: center; }
+        input, select, textarea { margin-bottom: 5px; }
     </style>
 </head>
 <body>
@@ -20,15 +21,14 @@
             <li><a href="#">Donate Food</a></li>
             <li><a href="contactus.html">Contact Us</a></li>
             <li><a href="checkout.html">Checkout</a></li>
-            <li id="auth-link"><a href="login.html">Login</a></li>
         </ul>
     </nav>
-    <script src="auth.js"></script> <!-- Include this in every page -->
+
     <!-- Page Header -->
     <div class="header2">
         <span class="header-text">Donate Food!</span>
     </div>
-    <h3> Please provide details of the food to be donated! </h3>
+    <h3>Please provide details of the food to be donated!</h3>
 
     <!-- Donation Form -->
     <section class="contact-form">
@@ -36,10 +36,8 @@
             <table cellspacing="10px" class="donate">
                 <tr>
                     <td align="right"><label for="name">NGO Name:</label></td>
-                    <td>
-                        <input type="text" id="name" name="name">
-                        <div class="error" id="nameError"></div>
-                    </td>
+                    <td><input type="text" id="name" name="name">
+                        <span id="nameError" class="error"></span></td>
                 </tr>
                 <tr>
                     <td align="right"><label for="fooditem">Food Item:</label></td>
@@ -53,156 +51,130 @@
                             <option value="Khichdi">Khichdi</option>
                             <option value="Roti Bhindi">Roti Bhindi</option>
                         </select>
-                        <div class="error" id="fooditemError"></div>
+                        <span id="fooditemError" class="error"></span>
                     </td>
                 </tr>
-        
                 <tr>
-                    <td align="right"><label for="foodQuantity">Quantity (In Plates):</label></td>
-                    <td>
-                        <input type="text" id="foodQuantity" name="foodQuantity">
-                        <div class="error" id="foodQuantityError"></div>
-                    </td>
+                    <td align="right"><label for="foodQuantity">Quantity (Plates):</label></td>
+                    <td><input type="text" id="foodQuantity" name="foodQuantity">
+                        <span id="foodQuantityError" class="error"></span></td>
                 </tr>
-        
                 <tr>
-                    <td align="right"><label for="foodShelfLife">Shelf Life (In Days):</label></td>
-                    <td>
-                        <input type="text" id="foodShelfLife" name="foodShelfLife">
-                        <div class="error" id="foodShelfLifeError"></div>
-                    </td>
+                    <td align="right"><label for="foodShelfLife">Shelf Life:</label></td>
+                    <td><input type="text" id="foodShelfLife" name="foodShelfLife">
+                        <span id="foodShelfLifeError" class="error"></span></td>
                 </tr>
-
                 <tr>
                     <td align="right"><label for="email">Email:</label></td>
-                    <td>
-                        <input type="email" id="email" name="email">
-                        <div class="error" id="emailError"></div>
-                    </td>
+                    <td><input type="email" id="email" name="email">
+                        <span id="emailError" class="error"></span></td>
                 </tr>
-
                 <tr>
                     <td align="right"><label for="mobno">Contact No:</label></td>
-                    <td>
-                        <input type="number" id="mobno" name="mobno">
-                        <div class="error" id="mobnoError"></div>
-                    </td>
+                    <td><input type="number" id="mobno" name="mobno">
+                        <span id="mobnoError" class="error"></span></td>
                 </tr>
-
                 <tr>
                     <td align="right"><label for="addr">Address:</label></td>
-                    <td>
-                        <textarea id="addr" name="addr" rows="3" cols="25"></textarea>
-                        <div class="error" id="addrError"></div>
-                    </td>
+                    <td><textarea id="addr" name="addr" rows="3" cols="25"></textarea>
+                        <span id="addrError" class="error"></span></td>
                 </tr>
-                
                 <tr>
                     <td colspan="2" align="center">
-                        <button type="button" class="submitbtn" onclick="validateForm()">Submit</button>
+                        <button type="button" class="submitbtn" onclick="submitForm()">Submit</button>
                         <input type="reset" value="Reset">
                     </td>
                 </tr>
             </table>
         </form>
-
-        <!-- Message Display -->
         <p id="responseMessage" class="success"></p>
     </section>
 
-    <!-- Footer -->
-    <footer>
-        <p>&copy; 2025 FoodForAll | Made with ❤</p>
-    </footer>
-
+    <!-- Supabase Script -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.18.0/dist/umd/supabase.js"></script>
     <script>
-        function validateForm() {
+        const supabaseUrl = "https://fvwigvpgfzvbbbfvizbr.supabase.co";
+        const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ2d2lndnBnZnp2YmJiZnZpemJyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ0NTQ3NTIsImV4cCI6MjA2MDAzMDc1Mn0.TVJLaniIzP8JECFg6yXqFKEcra69jKzBsxOyASUl3q4";
+        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+        function clearErrors() {
+            document.getElementById("nameError").innerText = "";
+            document.getElementById("fooditemError").innerText = "";
+            document.getElementById("foodQuantityError").innerText = "";
+            document.getElementById("foodShelfLifeError").innerText = "";
+            document.getElementById("emailError").innerText = "";
+            document.getElementById("mobnoError").innerText = "";
+            document.getElementById("addrError").innerText = "";
+        }
+
+        async function submitForm() {
+            clearErrors(); // Clear previous error messages
+
             let isValid = true;
-            document.getElementById("responseMessage").innerText = ""; // Reset messages
-            
-            // Reset all error messages
-            document.querySelectorAll(".error").forEach(el => el.innerText = "");
+            const formData = {
+                ngo_name: document.getElementById("name").value.trim(),
+                food_item: document.getElementById("fooditem").value,
+                quantity: document.getElementById("foodQuantity").value.trim(),
+                shelf_life: document.getElementById("foodShelfLife").value.trim(),
+                email: document.getElementById("email").value.trim(),
+                contact_no: document.getElementById("mobno").value.trim(),
+                address: document.getElementById("addr").value.trim()
+            };
 
-            // Get field values
-            const name = document.getElementById("name").value.trim();
-            const fooditem = document.getElementById("fooditem").value;
-            const foodQuantity = document.getElementById("foodQuantity").value.trim();
-            const foodShelfLife = document.getElementById("foodShelfLife").value.trim();
-            const email = document.getElementById("email").value.trim();
-            const mobno = document.getElementById("mobno").value.trim();
-            const addr = document.getElementById("addr").value.trim();
-
-            // Validation checks
-            if (name === "") {
-                document.getElementById("nameError").innerText = "NGO Name is required.";
+            // Validate inputs
+            if (!formData.ngo_name) {
                 isValid = false;
+                document.getElementById("nameError").innerText = "NGO Name is required";
             }
-
-            if (fooditem === "") {
-                document.getElementById("fooditemError").innerText = "Please select a food item.";
+            if (!formData.food_item) {
                 isValid = false;
+                document.getElementById("fooditemError").innerText = "Please select a food item";
             }
-
-            if (foodQuantity === "" || isNaN(foodQuantity) || foodQuantity <= 0) {
-                document.getElementById("foodQuantityError").innerText = "Enter a valid quantity.";
+            if (!formData.quantity || isNaN(formData.quantity) || formData.quantity <= 0) {
                 isValid = false;
+                document.getElementById("foodQuantityError").innerText = "Valid quantity is required";
             }
-
-            if (foodShelfLife === "" || isNaN(foodShelfLife) || foodShelfLife <= 0) {
-                document.getElementById("foodShelfLifeError").innerText = "Enter a valid shelf life (in days).";
+            if (!formData.shelf_life) {
                 isValid = false;
+                document.getElementById("foodShelfLifeError").innerText = "Shelf life is required";
             }
-
-            if (email === "" || !/^\S+@\S+\.\S+$/.test(email)) {
-                document.getElementById("emailError").innerText = "Enter a valid email address.";
+            if (!formData.email) {
                 isValid = false;
+                document.getElementById("emailError").innerText = "Email is required";
             }
-
-            if (mobno === "" || mobno.length < 10 || mobno.length > 15 || isNaN(mobno)) {
-                document.getElementById("mobnoError").innerText = "Enter a valid contact number (10-15 digits).";
+            if (!formData.contact_no || formData.contact_no.length < 10) {
                 isValid = false;
+                document.getElementById("mobnoError").innerText = "Valid contact number is required";
             }
-
-            if (addr === "") {
-                document.getElementById("addrError").innerText = "Address cannot be empty.";
+            if (!formData.address) {
                 isValid = false;
+                document.getElementById("addrError").innerText = "Address is required";
             }
 
             if (isValid) {
-                submitForm();
+                const { error } = await supabase
+                    .from("food_donations")
+                    .insert([formData]);
+
+                const message = document.getElementById("responseMessage");
+
+                if (error) {
+                    console.error(error);
+                    message.style.color = "red";
+                    message.innerText = "Error submitting form!";
+                } else {
+                    message.style.color = "green";
+                    message.innerText = "Donation details submitted successfully!";
+                    document.getElementById("foodRequestForm").reset();
+                }
+            } else {
+                document.getElementById("responseMessage").style.display = "none";
             }
         }
-
-        function submitForm() {
-            const formData = {
-                name: document.getElementById("name").value.trim(),
-                fooditem: document.getElementById("fooditem").value,
-                foodQuantity: document.getElementById("foodQuantity").value.trim(),
-                foodShelfLife: document.getElementById("foodShelfLife").value.trim(),
-                email: document.getElementById("email").value.trim(),
-                mobno: document.getElementById("mobno").value.trim(),
-                addr: document.getElementById("addr").value.trim()
-            };
-
-            fetch("http://localhost:5000/donate", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(formData)
-            })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById("responseMessage").style.color = "green";
-                document.getElementById("responseMessage").innerText = data.message;
-                document.getElementById("foodRequestForm").reset();
-            })
-            .catch(error => {
-                document.getElementById("responseMessage").style.color = "red";
-                document.getElementById("responseMessage").innerText = "Error submitting form!";
-            });
-        }
     </script>
-    
+
+    <footer>
+        <p>&copy; 2025 FoodForAll | Made with ❤</p>
+    </footer>
 </body>
 </html>
