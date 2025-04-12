@@ -667,3 +667,59 @@ footer .social-links a {
   color: #000;
   border-color: #f97316;
 }
+
+.hero-section {
+  position: relative;
+  background-image: url('your-hero-image.jpg');
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.hero-overlay {
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3); /* subtle overlay for contrast */
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 10%;
+}
+
+.hero-content {
+  text-align: left;
+  color: white;
+  max-width: 600px;
+}
+
+.hero-bar {
+  width: 50px;
+  height: 10px;
+  background-color: #f97316;
+  margin-bottom: 20px;
+}
+
+.hero-content h1 {
+  font-size: 48px;
+  font-weight: bold;
+  line-height: 1.2;
+  margin-bottom: 25px;
+}
+
+.hero-button {
+  background-color: #000;
+  color: white;
+  padding: 12px 25px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.hero-button:hover {
+  background-color: #f97316;
+  color: #000;
+}
+
