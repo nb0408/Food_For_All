@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top Donated Foods</title>
+    <link rel="stylesheet" type="text/css" href="fstyles.css">
+</head>
+<body>
+   
+    <nav>
+        <ul>
+            <li><a href="home.html">Home</a></li>
+            <li><a href="#">Food Items</a></li>
+            <li><a href="donatefood.html">Donate Food</a></li>
+            <li><a href="contactus.html">Contact Us</a></li>
+            <li><a href="checkout.html">Checkout</a></li>
+            <li id="auth-link"><a href="login.html">Login</a></li>
+        </ul>
+    </nav>
+    <script src="auth.js"></script> <!-- Include this in every page -->
+    <div class="header">
+        <span class="header-text">Available Items!</span>
+    </div>
+    
+    <h3>The following items are available for donation</h3> 
+    
+    <div class="search-bar">
+        <input type="text" placeholder="Search food to donate">
+        <button>🔍</button>
+    </div>
+    
+    <div class="food-items">
+        <div class="food-item">
+            <img src="pictures/dalchawal.jpeg" alt="Dal Chawal">
+            <p>Dal Chawal</p>
+        </div>
+        <div class="food-item">
+            <img src="pictures/meals.jpeg" alt="Meals">
+            <p>Meals</p>
+        </div>
+        <div class="food-item">
+            <img src="pictures/dosa.jpeg" alt="Dosa">
+            <p>Dosa</p>
+        </div>
+        <div class="food-item">
+            <img src="pictures/sambarrice.jpeg" alt="Sambar Rice">
+            <p>Sambar Rice</p>
+        </div>
+        <div class="food-item">
+            <img src="pictures/khichdi.jpeg" alt="Khichdi">
+            <p>Khichdi</p>
+        </div>
+        <div class="food-item">
+            <img src="pictures/rotibhindi.jpeg" alt="Roti Bhindi">
+            <p>Roti Bhindi</p>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 FoodForAll | Made with ❤</p>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const foodItems = document.querySelectorAll(".food-item");
+            foodItems.forEach(item => {
+                item.addEventListener("click", function() {
+                    const name = this.querySelector("p").innerText;
+                    window.location.href = `food_details.html?name=${encodeURIComponent(name)}`;
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>

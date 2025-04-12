@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request Foods</title>
+    <link rel="stylesheet" type="text/css" href="fstyles.css">
+    <style>
+        .error { color: red; font-size: 14px; }
+        .success { color: green; font-size: 16px; font-weight: bold; text-align: center; }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav>
+        <ul>
+            <li><a href="home.html">Home</a></li>
+            <li><a href="foodstocks.html">Food Items</a></li>
+            <li><a href="#">Donate Food</a></li>
+            <li><a href="contactus.html">Contact Us</a></li>
+            <li><a href="checkout.html">Checkout</a></li>
+            <li id="auth-link"><a href="login.html">Login</a></li>
+        </ul>
+    </nav>
+    <script src="auth.js"></script> <!-- Include this in every page -->
+    <!-- Page Header -->
+    <div class="header2">
+        <span class="header-text">Donate Food!</span>
+    </div>
+    <h3> Please provide details of the food to be donated! </h3>
+
+    <!-- Donation Form -->
+    <section class="contact-form">
+        <form id="foodRequestForm">
+            <table cellspacing="10px" class="donate">
+                <tr>
+                    <td align="right"><label for="name">NGO Name:</label></td>
+                    <td>
+                        <input type="text" id="name" name="name">
+                        <div class="error" id="nameError"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right"><label for="fooditem">Food Item:</label></td>
+                    <td>
+                        <select id="fooditem" name="fooditem">
+                            <option value="" default>Select Food Item</option>
+                            <option value="Dal Chawal">Dal Chawal</option>
+                            <option value="Sambar Rice">Sambar Rice</option>
+                            <option value="Meals">Meals</option>
+                            <option value="Dosa">Dosa</option>
+                            <option value="Khichdi">Khichdi</option>
+                            <option value="Roti Bhindi">Roti Bhindi</option>
+                        </select>
+                        <div class="error" id="fooditemError"></div>
+                    </td>
+                </tr>
+        
+                <tr>
+                    <td align="right"><label for="foodQuantity">Quantity (In Plates):</label></td>
+                    <td>
+                        <input type="text" id="foodQuantity" name="foodQuantity">
+                        <div class="error" id="foodQuantityError"></div>
+                    </td>
+                </tr>
+        
+                <tr>
+                    <td align="right"><label for="foodShelfLife">Shelf Life (In Days):</label></td>
+                    <td>
+                        <input type="text" id="foodShelfLife" name="foodShelfLife">
+                        <div class="error" id="foodShelfLifeError"></div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td align="right"><label for="email">Email:</label></td>
+                    <td>
+                        <input type="email" id="email" name="email">
+                        <div class="error" id="emailError"></div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td align="right"><label for="mobno">Contact No:</label></td>
+                    <td>
+                        <input type="number" id="mobno" name="mobno">
+                        <div class="error" id="mobnoError"></div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td align="right"><label for="addr">Address:</label></td>
+                    <td>
+                        <textarea id="addr" name="addr" rows="3" cols="25"></textarea>
+                        <div class="error" id="addrError"></div>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td colspan="2" align="center">
+                        <button type="button" class="submitbtn" onclick="validateForm()">Submit</button>
+                        <input type="reset" value="Reset">
+                    </td>
+                </tr>
+            </table>
+        </form>
+
+        <!-- Message Display -->
+        <p id="responseMessage" class="success"></p>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 FoodForAll | Made with ❤</p>
+    </footer>
+
+    <script>
+        function validateForm() {
+            let isValid = true;
+            document.getElementById("responseMessage").innerText = ""; // Reset messages
+            
+            // Reset all error messages
+            document.querySelectorAll(".error").forEach(el => el.innerText = "");
+
+            // Get field values
+            const name = document.getElementById("name").value.trim();
+            const fooditem = document.getElementById("fooditem").value;
+            const foodQuantity = document.getElementById("foodQuantity").value.trim();
+            const foodShelfLife = document.getElementById("foodShelfLife").value.trim();
+            const email = document.getElementById("email").value.trim();
+            const mobno = document.getElementById("mobno").value.trim();
+            const addr = document.getElementById("addr").value.trim();
+
+            // Validation checks
+            if (name === "") {
+                document.getElementById("nameError").innerText = "NGO Name is required.";
+                isValid = false;
+            }
+
+            if (fooditem === "") {
+                document.getElementById("fooditemError").innerText = "Please select a food item.";
+                isValid = false;
+            }
+
+            if (foodQuantity === "" || isNaN(foodQuantity) || foodQuantity <= 0) {
+                document.getElementById("foodQuantityError").innerText = "Enter a valid quantity.";
+                isValid = false;
+            }
+
+            if (foodShelfLife === "" || isNaN(foodShelfLife) || foodShelfLife <= 0) {
+                document.getElementById("foodShelfLifeError").innerText = "Enter a valid shelf life (in days).";
+                isValid = false;
+            }
+
+            if (email === "" || !/^\S+@\S+\.\S+$/.test(email)) {
+                document.getElementById("emailError").innerText = "Enter a valid email address.";
+                isValid = false;
+            }
+
+            if (mobno === "" || mobno.length < 10 || mobno.length > 15 || isNaN(mobno)) {
+                document.getElementById("mobnoError").innerText = "Enter a valid contact number (10-15 digits).";
+                isValid = false;
+            }
+
+            if (addr === "") {
+                document.getElementById("addrError").innerText = "Address cannot be empty.";
+                isValid = false;
+            }
+
+            if (isValid) {
+                submitForm();
+            }
+        }
+
+        function submitForm() {
+            const formData = {
+                name: document.getElementById("name").value.trim(),
+                fooditem: document.getElementById("fooditem").value,
+                foodQuantity: document.getElementById("foodQuantity").value.trim(),
+                foodShelfLife: document.getElementById("foodShelfLife").value.trim(),
+                email: document.getElementById("email").value.trim(),
+                mobno: document.getElementById("mobno").value.trim(),
+                addr: document.getElementById("addr").value.trim()
+            };
+
+            fetch("http://localhost:5000/donate", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("responseMessage").style.color = "green";
+                document.getElementById("responseMessage").innerText = data.message;
+                document.getElementById("foodRequestForm").reset();
+            })
+            .catch(error => {
+                document.getElementById("responseMessage").style.color = "red";
+                document.getElementById("responseMessage").innerText = "Error submitting form!";
+            });
+        }
+    </script>
+    
+</body>
+</html>

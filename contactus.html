@@ -1,0 +1,110 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us</title>
+    <link rel="stylesheet" href="fstyles.css">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav>
+        <ul>
+            
+            <li><a href="home.html">Home</a></li>
+            <li><a href="foodstocks.html">Food Items</a></li>
+            <li><a href="donatefood.html">Donate</a></li>
+            <li><a href="#">Contact Us</a></li>
+            <li><a href="checkout.html">Checkout</a></li>
+            <li id="auth-link"><a href="login.html">Login</a></li>
+        </ul>
+    </nav>
+    <script src="auth.js"></script> <!-- Include this in every page -->
+    <!-- Page Header -->
+    <div class="header2">
+        <span class="header-text">Contact Us</span>
+    </div>
+
+    <!-- Contact Information -->
+    <section class="contact-info">
+        <h2>We'd love to hear from you!</h2>
+        <p>
+            Address: 123, Kelambakkam, Chennai<br>
+            Phone: +91 78000 78000<br>
+            Email: foodforall@org.in
+        </p>
+    </section>
+
+    <!-- Contact Form -->
+    <section class="contact-form">
+        <form id="contactForm">
+            <table cellspacing="10px">
+                <tr>
+                    <td align="right"><label for="name">Name:</label></td>
+                    <td><input type="text" id="name" name="name" required></td>
+                </tr>
+
+                <tr>
+                    <td align="right"><label for="email">Email:</label></td>
+                    <td><input type="email" id="email" name="email" required></td>
+                </tr>
+
+                <tr>
+                    <td align="right"><label for="message">Message:</label></td>
+                    <td><textarea id="message" name="message" rows="4" required></textarea></td>
+                </tr>
+
+                <tr>
+                    <td colspan="2" align="center">
+                        <button type="button" class="submitbtn" onclick="submitContactForm()">Submit</button>
+                        <input type="reset" value="Reset">
+                    </td>
+                </tr>
+            </table>
+        </form>
+
+        <!-- Message Display -->
+        <p id="responseMessage" style="text-align:center; font-weight:bold;"></p>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 FoodForAll | Made with ❤</p>
+    </footer>
+
+    <!-- JavaScript to Handle Form Submission -->
+    <script>
+        async function submitContactForm() {
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+            const message = document.getElementById("message").value;
+            const responseMessage = document.getElementById("responseMessage");
+
+            try {
+                const response = await fetch("http://localhost:5000/contact", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ name, email, message })
+                });
+
+                const result = await response.json();
+                if (response.ok) {
+                    responseMessage.style.color = "green";
+                    responseMessage.innerText = result.message;
+                    document.getElementById("contactForm").reset();
+                } else {
+                    responseMessage.style.color = "red";
+                    responseMessage.innerText = result.error || "Failed to send message.";
+                }
+            } catch (error) {
+                responseMessage.style.color = "red";
+                responseMessage.innerText = "Server error. Please try again later.";
+                console.error(error);
+            }
+        }
+    </script>
+
+</body>
+</html>

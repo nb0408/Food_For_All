@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="fstyles.css"> <!-- Keeping same CSS -->
+    <script src="auth.js" defer></script> <!-- JS for login/logout -->
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav>
+        <ul>
+            <li><a href="home.html">Home</a></li>
+            <li><a href="foodstocks.html">Food Items</a></li>
+            <li><a href="donatefood.html">Donate</a></li>
+            <li><a href="contactus.html">Contact Us</a></li>
+            <li><a href="checkout.html">Checkout</a></li>
+        </ul>
+    </nav>
+    <script src="auth.js"></script> <!-- Include this in every page -->
+    <!-- Page Header -->
+    <div class="header2">
+        <span class="header-text">Login</span>
+    </div>
+
+    <!-- Login Form -->
+    <section class="contact-form">
+        <form onsubmit="loginUser(event)">
+            <table cellspacing="10px">
+                <tr>
+                    <td align="right"><label for="name">Name:</label></td>
+                    <td><input type="text" id="name" name="name" required></td>
+                </tr>
+
+                <tr>
+                    <td align="right"><label for="email">Email:</label></td>
+                    <td><input type="email" id="email" name="email" required></td>
+                </tr>
+
+                <tr>
+                    <td align="right"><label for="pw">Password:</label></td>
+                    <td><input type="password" id="pw" name="pw" required></td>
+                </tr>
+
+                <tr>
+                    <td align="right"><label for="cpw">Confirm Password:</label></td>
+                    <td><input type="password" id="cpw" name="cpw" required></td>
+                </tr>
+
+                <tr>
+                    <td align="right"><label for="address">Address:</label></td>
+                    <td><textarea id="address" name="address" rows="2" required></textarea></td>
+                </tr>
+
+                <tr>
+                    <td colspan="2" align="center">
+                        <button type="submit" class="submitbtn">Login</button>
+                        <input type="reset" value="Reset">
+                    </td>
+                </tr>
+            </table>
+        </form>
+
+        <!-- Message Display -->
+        <p id="responseMessage" style="text-align:center; font-weight:bold;"></p>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 FoodForAll | Made with ❤</p>
+    </footer>
+
+</body>
+</html>
