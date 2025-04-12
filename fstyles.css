@@ -723,3 +723,45 @@ footer .social-links a {
   color: #000;
 }
 
+.sdg-section {
+  background: #e6f4ea; /* soft eco-friendly green */
+  text-align: center;
+  padding: 50px 20px;
+}
+
+.sdg-section h2 {
+  font-size: 2em;
+  color: #1b5e20; /* deep green */
+  margin-bottom: 40px;
+}
+
+.sdg-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+}
+
+.sdg-item {
+  width: 160px;
+  text-align: center;
+}
+
+.sdg-item img {
+  width: 100%;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  transition: transform 0.3s ease;
+}
+
+.sdg-item img:hover {
+  transform: scale(1.05);
+}
+
+.sdg-item p {
+  margin-top: 10px;
+  font-weight: 600;
+  font-size: 14px;
+  color: #1b5e20;
+}
+
