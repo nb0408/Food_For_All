@@ -14,6 +14,29 @@ body {
     background-color: #f8f9fa;
     color: #333;
 }
+.success-message {
+    color: green;
+    background-color: #d4edda;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.error-message {
+    color: red;
+    background-color: #f8d7da;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.hidden {
+    display: none;
+}
 
 
 /* Navigation styles */
@@ -75,14 +98,14 @@ nav ul li a:hover {
 
 /* Header styles */
 .main {
-    background: url("C:\\Users\\91981\\Downloads\\360_F_292075696_hGdSBQ9Bvf1jsaVMP2rTpuRr0VMATck0.jpg") center/cover no-repeat;
+    background: url("pictures\\header1.jpeg ") center/cover no-repeat;
     color: white;
     text-align: center;
     padding: 100px 20px;
 }
 
 .header {
-    background: url("C:\\Users\\91981\\Downloads\\shutterstock_2262574417.jpg") no-repeat center center/cover;
+    background: url("pictures\\header2new.jpeg") no-repeat center center/cover;
     padding: 75px 20px;
     color: white;
     font-size: 24px;
@@ -91,7 +114,7 @@ nav ul li a:hover {
 }
 
 .header2 {
-    background: url("C:\\Users\\91981\\Downloads\\360_F_1029856076_AiopWepXnBWdohfXa4AqYGAxTZh2xo1E.jpg") center center/cover;
+    background: url("pictures\\header3new.jpeg ") center center/cover;
     padding: 75px 20px;
     color: white;
     font-size: 24px;
