@@ -521,48 +521,87 @@ footer {
     background-color: #cc0000; /* Darker Red */
 }
 
-/* Overlay for hero */
-.main .overlay {
-    background: rgba(0, 0, 0, 0.55);
-    padding: 100px 20px;
-    border-radius: 10px;
+/* Arundhati */
+/* Hero Section */
+.hero {
+  background-color: #000;
+  color: #fff;
+  padding: 100px 20px;
+  text-align: center;
 }
 
-/* SDG Section */
-.sdgs {
-    padding: 60px 20px;
-    background-color: #fff3e0;
-    text-align: center;
+.hero .btn {
+  margin: 10px;
 }
 
-.sdgs h2 {
-    font-size: 2.5rem;
-    color: #ff6600;
-    margin-bottom: 40px;
+/* Impact Statistics */
+.impact-stats {
+  display: flex;
+  justify-content: space-around;
+  background-color: #ff6600;
+  color: #fff;
+  padding: 50px 20px;
 }
 
-.sdg-grid {
-    display: flex;
-    justify-content: center;
-    gap: 40px;
-    flex-wrap: wrap;
+.impact-stats .stat h2 {
+  font-size: 2.5rem;
 }
 
-.sdg-card {
-    background: white;
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-    width: 180px;
-    transition: transform 0.3s ease-in-out;
+.impact-stats .stat p {
+  font-size: 1.2rem;
 }
 
-.sdg-card:hover {
-    transform: translateY(-10px);
+/* Mission Statement */
+.mission {
+  background-color: #f8f9fa;
+  padding: 60px 20px;
+  text-align: center;
 }
 
-.sdg-card img {
-    width: 100px;
-    height: 100px;
-    margin-bottom: 15px;
+.mission h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+/* Core Focus Areas */
+.focus-areas {
+  display: flex;
+  justify-content: space-around;
+  background-color: #fff;
+  padding: 60px 20px;
+}
+
+.focus-areas .area {
+  width: 30%;
+}
+
+.focus-areas .area h3 {
+  color: #ff6600;
+  margin-bottom: 10px;
+}
+
+/* Call to Action */
+.call-to-action {
+  background-color: #000;
+  color: #fff;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.call-to-action h2 {
+  margin-bottom: 20px;
+}
+
+/* Footer */
+footer {
+  background-color: #343a40;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+}
+
+footer .social-links a {
+  color: #ff6600;
+  margin: 0 10px;
+  text-decoration: none;
 }
