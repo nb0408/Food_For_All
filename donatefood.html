@@ -140,11 +140,13 @@
                 isValid = false;
                 document.getElementById("foodShelfLifeError").innerText = "Shelf life is required";
             }
-            if (!formData.email) {
-                isValid = false;
-                document.getElementById("emailError").innerText = "Email is required";
+             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!formData.email || !emailRegex.test(formData.email)) {
+            isValid = false;
+            document.getElementById("emailError").innerText = "Please enter a valid email address";
             }
-            if (!formData.contact_no || formData.contact_no.length < 10) {
+
+            if (!formData.contact_no || formData.contact_no.length != 10) {
                 isValid = false;
                 document.getElementById("mobnoError").innerText = "Valid contact number is required";
             }
